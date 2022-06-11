@@ -370,7 +370,7 @@ public class OpenNoteCameraView extends JavaCameraView implements PictureCallbac
         if (mBugRotate) {
             mCamera.setDisplayOrientation(270);
         } else {
-            mCamera.setDisplayOrientation(90);
+            mCamera.setDisplayOrientation(0);
         }
 
         if (mImageProcessor != null) {
