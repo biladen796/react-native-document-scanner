@@ -314,18 +314,13 @@ public class OpenNoteCameraView extends JavaCameraView implements PictureCallbac
 
         Camera.Parameters param;
         param = mCamera.getParameters();
-//        param.set("orientation", "portrait");
-        Display display = mActivity.getWindowManager().getDefaultDisplay();
 
-//        Size pSize = getOptimalPreviewSize(
-//                param.getSupportedPreviewSizes()
-//                , getResources().getDisplayMetrics().widthPixels
-//                , getResources().getDisplayMetrics().heightPixels);
         Size pSize = getMaxPreviewResolution();
         param.setPreviewSize(pSize.width, pSize.height);
         param.setWhiteBalance(Camera.Parameters.WHITE_BALANCE_AUTO);
         float previewRatio = (float) pSize.width / pSize.height;
 
+        Display display = mActivity.getWindowManager().getDefaultDisplay();
         android.graphics.Point size = new android.graphics.Point();
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR1) {
             display.getRealSize(size);
