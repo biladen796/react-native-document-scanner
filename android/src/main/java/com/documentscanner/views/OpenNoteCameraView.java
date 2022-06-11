@@ -314,10 +314,11 @@ public class OpenNoteCameraView extends JavaCameraView implements PictureCallbac
 
         Camera.Parameters param;
         param = mCamera.getParameters();
+        param.set("orientation", "portrait");
         Display display = mActivity.getWindowManager().getDefaultDisplay();
 
         Size pSize = getOptimalPreviewSize(
-                mCamera.getParameters().getSupportedPreviewSizes()
+                param.getSupportedPreviewSizes()
                 , getResources().getDisplayMetrics().widthPixels
                 , getResources().getDisplayMetrics().heightPixels);
         param.setPreviewSize(pSize.width, pSize.height);
@@ -363,7 +364,6 @@ public class OpenNoteCameraView extends JavaCameraView implements PictureCallbac
             param.setFlashMode(enableTorch ? Camera.Parameters.FLASH_MODE_TORCH : Camera.Parameters.FLASH_MODE_OFF);
         }
         param.setFocusMode(Camera.Parameters.FOCUS_MODE_CONTINUOUS_PICTURE);
-        param.set("orientation", "portrait");
 
         mCamera.setParameters(param);
 
