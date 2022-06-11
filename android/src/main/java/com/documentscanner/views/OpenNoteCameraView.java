@@ -319,7 +319,6 @@ public class OpenNoteCameraView extends JavaCameraView implements PictureCallbac
         param.setPreviewSize(pSize.width, pSize.height);
         param.setWhiteBalance(Camera.Parameters.WHITE_BALANCE_AUTO);
         float previewRatio = (float) pSize.width / pSize.height;
-
         Display display = mActivity.getWindowManager().getDefaultDisplay();
         android.graphics.Point size = new android.graphics.Point();
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR1) {
@@ -332,14 +331,18 @@ public class OpenNoteCameraView extends JavaCameraView implements PictureCallbac
         float displayRatio = (float) displayHeight / displayWidth;
 
         int previewHeight;
+        int previewWidth;
 
         if (displayRatio > previewRatio) {
             ViewGroup.LayoutParams surfaceParams = mSurfaceView.getLayoutParams();
             previewHeight = (int) ((float) size.y / displayRatio * previewRatio);
+            previewWidth = (int) ((float) size.x / displayRatio * previewRatio);
             surfaceParams.height = previewHeight;
+            surfaceParams.width = previewWidth;
             mSurfaceView.setLayoutParams(surfaceParams);
 
             mHud.getLayoutParams().height = previewHeight;
+            mHud.getLayoutParams().width = previewWidth;
         }
 
 
