@@ -335,8 +335,8 @@ public class OpenNoteCameraView extends JavaCameraView implements PictureCallbac
 
         if (displayRatio > previewRatio) {
             ViewGroup.LayoutParams surfaceParams = mSurfaceView.getLayoutParams();
-            previewHeight = (int) ((float) size.y / displayRatio * previewRatio);
-            previewWidth = (int) ((float) size.x / displayRatio * previewRatio);
+            previewHeight = displayHeight;
+            previewWidth = displayWidth;
             surfaceParams.height = previewHeight;
             surfaceParams.width = previewWidth;
             mSurfaceView.setLayoutParams(surfaceParams);
