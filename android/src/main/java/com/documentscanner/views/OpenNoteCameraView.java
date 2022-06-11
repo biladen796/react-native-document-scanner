@@ -315,10 +315,6 @@ public class OpenNoteCameraView extends JavaCameraView implements PictureCallbac
         Camera.Parameters param;
         param = mCamera.getParameters();
 
-        Size pSize = getMaxPreviewResolution();
-        param.setPreviewSize(pSize.width, pSize.height);
-        param.setWhiteBalance(Camera.Parameters.WHITE_BALANCE_AUTO);
-        float previewRatio = (float) pSize.width / pSize.height;
         Display display = mActivity.getWindowManager().getDefaultDisplay();
         android.graphics.Point size = new android.graphics.Point();
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR1) {
@@ -327,6 +323,23 @@ public class OpenNoteCameraView extends JavaCameraView implements PictureCallbac
 
         int displayWidth = Math.min(size.y, size.x);
         int displayHeight = Math.max(size.y, size.x);
+
+//        Size pSize = getMaxPreviewResolution();
+        Size pSize = getBestAspectPreviewSize(mBugRotate ? 270 : 90
+                , displayWidth
+                , displayHeight
+                , param);
+        param.setPreviewSize(pSize.width, pSize.height);
+        param.setWhiteBalance(Camera.Parameters.WHITE_BALANCE_AUTO);
+        float previewRatio = (float) pSize.width / pSize.height;
+//        Display display = mActivity.getWindowManager().getDefaultDisplay();
+//        android.graphics.Point size = new android.graphics.Point();
+//        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR1) {
+//            display.getRealSize(size);
+//        }
+//
+//        int displayWidth = Math.min(size.y, size.x);
+//        int displayHeight = Math.max(size.y, size.x);
 
         float displayRatio = (float) displayHeight / displayWidth;
 
@@ -396,6 +409,31 @@ public class OpenNoteCameraView extends JavaCameraView implements PictureCallbac
 
         safeToTakePicture = true;
 
+    }
+
+    public Camera.Size getBestAspectPreviewSize(int displayOrientation,
+                                                       int width,
+                                                       int height,
+                                                       Camera.Parameters parameters) {
+        double targetRatio = (double) width / height;
+        Camera.Size optimalSize = null;
+        double minDiff = Double.MAX_VALUE;
+        if (displayOrientation == 90 || displayOrientation == 270) {
+            targetRatio = (double) height / width;
+        }
+        List<Camera.Size> sizes = parameters.getSupportedPreviewSizes();
+//        Collections.sort(sizes, );
+        for (Camera.Size size : sizes) {
+            double ratio = (double) size.width / size.height;
+            if (Math.abs(ratio - targetRatio) < minDiff) {
+                optimalSize = size;
+                minDiff = Math.abs(ratio - targetRatio);
+            }
+            if (minDiff < 0.0d) {
+                break;
+            }
+        }
+        return (optimalSize);
     }
 
     private Camera.Size getOptimalPreviewSize(List<Camera.Size> sizes, int w, int h) {
