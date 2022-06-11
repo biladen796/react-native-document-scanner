@@ -363,6 +363,7 @@ public class OpenNoteCameraView extends JavaCameraView implements PictureCallbac
             param.setFlashMode(enableTorch ? Camera.Parameters.FLASH_MODE_TORCH : Camera.Parameters.FLASH_MODE_OFF);
         }
         param.setFocusMode(Camera.Parameters.FOCUS_MODE_CONTINUOUS_PICTURE);
+        param.set("orientation", "portrait");
 
         mCamera.setParameters(param);
 
